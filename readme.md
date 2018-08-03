@@ -1,4 +1,4 @@
-![](https://javascript30.com/images/JS3-social-share.png)
+# wlunareve 個人的js 30 練習
 
 # JavaScript30
 

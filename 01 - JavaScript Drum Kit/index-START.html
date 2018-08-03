@@ -58,20 +58,32 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+function playSound(e) {
+  //key code 有各自對應鍵盤的數字
+  // 第一種是偵測鍵盤按鍵的data-key 第二種是偵測滑鼠點擊的data-key 
+  let keyNum = e.keyCode || this.getAttribute('data-key'); //add
+  //利用` - 反引號(back-tick)或稱重音符(grave accent)來組合字串，在範圍內可利用${}加上變數操作
+  const audio = document.querySelector(`audio[data-key="${keyNum}"]`);
+  const key = document.querySelector(`div[data-key="${keyNum}"]`);
+  if (!audio) return;
+  key.classList.add('playing');
+  audio.currentTime = 0;
+  audio.play();
+}
 function removeTransition(e) {
-    if (e.propertyName !== 'transform') return;
-    e.target.classList.remove('playing');
-  }
-  function playSound(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-    if (!audio) return;
-    key.classList.add('playing');
-    audio.currentTime = 0;
-    audio.play();
-  }
+  if (e.propertyName !== 'transform') return;
+  e.target.classList.remove('playing');
+}  
+  // 取得 class=key 的div 
   const keys = Array.from(document.querySelectorAll('.key'));
+  
+  // document.addEventListener('transitionend', funtion) 中的 transitionend 用來在改變CSS後執行function
+  // 傳統寫法 let func1 = function(arg) { console.log('Hi, ' + arg); };
+  // 箭頭函式寫法 let func2 = arg => console.log('Hi, ' + arg);
+  // 補充:如果該function沒有參數要傳，要帶空括號如下 let func3 = () => console.log('Hi');
   keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  keys.forEach(key => key.addEventListener('click', playSound));
+  // window物件為包覆整個DOM的物件, 在該處設置監聽器可以監聽DOM內觸發的所有事件.
   window.addEventListener('keydown', playSound);
 </script>
 

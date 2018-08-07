@@ -62,15 +62,19 @@
       background:black;
       position: absolute;
       top:50%;
+      // 旋轉基準點
       transform-origin: 100% 0%;
+      // 旋轉角度
       transform: rotate(90deg);
       transition: all 0.05s;
+      // 設定動畫轉場所依據的貝茲曲線，可以透過chrome的開發者工具來進行可視化調整
       transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
   </style>
 
   <script>
+  // const 的值不能再被改變
   const hourHand = document.querySelector(".hour-hand");
   const minsHand = document.querySelector(".min-hand");
   const secondHand = document.querySelector(".second-hand");
@@ -89,6 +93,7 @@
   function showTime(){
     const Today = new Date();
     document.querySelector("#time").innerHTML = Today.getHours() + " 時 " + Today.getMinutes() + " 分 " + Today.getSeconds() + " 秒";
+    // setTimeout() 在指定毫秒後呼叫函數
     setTimeout("showTime()", 1000);
   }
   function setDate(){

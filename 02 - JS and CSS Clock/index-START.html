@@ -5,8 +5,8 @@
   <title>JS + CSS Clock</title>
 </head>
 <body>
-
-
+    <div id="date"></div>
+    <div id="time"></div>
     <div class="clock">
       <div class="clock-face">
         <div class="hand hour-hand"></div>
@@ -62,13 +62,55 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: 100% 0%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
   </style>
 
   <script>
+  const hourHand = document.querySelector(".hour-hand");
+  const minsHand = document.querySelector(".min-hand");
+  const secondHand = document.querySelector(".second-hand");
+    window.onload = function(){
+      showDate();
+      showTime();
+    }
 
+  // 取得目前日期方法
+  function showDate(){
+    const Today = new Date();
+    // 不可以使用 document.getElementById("").write()
+    document.getElementById("date").innerHTML = "今天日期是 " + Today.getFullYear()+ " 年 " + (Today.getMonth()+1) + " 月 " + Today.getDate() + " 日 ";
+  }
+  // 取得目前時間方法
+  function showTime(){
+    const Today = new Date();
+    document.querySelector("#time").innerHTML = Today.getHours() + " 時 " + Today.getMinutes() + " 分 " + Today.getSeconds() + " 秒";
+    setTimeout("showTime()", 1000);
+  }
+  function setDate(){
+    const now = new Date();
 
+    const seconds = now.getSeconds();
+    const secondsDegrees = ((seconds / 60) * 360) + 90;
+    //用 style.transform 進行 角度修改
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+    const mins = now.getMinutes();
+    const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
+    minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+    const hour = now.getHours();
+    const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
+    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+  }
+  //setInterval() 方法可按照指定的週期（以毫秒計）来呼叫函數。
+  setInterval(setDate, 1000);
+
+  setDate();
   </script>
 </body>
 </html>

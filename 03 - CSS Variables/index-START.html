@@ -22,6 +22,36 @@
 
   <style>
 
+    /* root 設置需要的CSS名稱 給初始參數，但不具備CSS效果 */
+    :root {
+      --base: #58db9a;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      /* 用var(變數名稱) 來建立 CSS 變數 */
+      padding: var(--spacing); 
+      background: var(--base);
+      /* 使用fillter 濾鏡中的blur 模糊效果 
+      grayscale灰階
+      sepia懷舊
+      saturate飽和
+      hue-rotate色相旋轉
+      invert負片
+      opacity不透明
+      brightness亮度
+      contrast對比
+      blur模糊
+      drop-shadow下拉陰影
+      */
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +75,22 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll(".controls input");
+    function handleUpdate() {
+      // this.dataset.sizing 取得 data-sizing的值
+      //<div id="test" data-no="123"></div>
+      //document.querySelector('#test').dataset.no // 輸出123
+      //document.querySelector('#test ').getAttribute('data-no'); // 輸出123
+      const suffix = this.dataset.sizing || '';
+      //等同於 style.padding = '15px';
+      //style.cssPropertyName('padding', '15px')，更有助於放參數進去
+      //這裡是為了讓每一種CSS變化可以以一種寫法完成
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
   </script>
 
 </body>

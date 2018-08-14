@@ -24,6 +24,11 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      /*
+      採用Flex布局的元素，稱為Flex容器（flex container）。
+      它的所有子元素自動成為容器成員，稱為Flex項目（flex item）。
+      */
+      display: flex;
     }
 
     .panel {
@@ -41,6 +46,25 @@
       font-size: 20px;
       background-size:cover;
       background-position:center;
+      flex: 1;
+      /*
+      justify-content屬性定義了項目在主軸上的對齊方式。
+      一開始的狀態
+      justify-content: center;
+      點擊後的效果
+      justify-content: space-around;
+      */
+      justify-content: center;
+      /*加 display: flex; 讓文字部分也成為flex*/
+      display: flex;
+      /*
+      flex-direction: column;
+      row：主軸為水平方向，起點在左端。
+      row-reverse：主軸為水平方向，起點在右端。
+      column：主軸為垂直方向，起點在上沿。
+      column-reverse：主軸為垂直方向，起點在下沿。
+      */
+      flex-direction: column;
     }
 
 
@@ -54,7 +78,22 @@
       margin:0;
       width: 100%;
       transition:transform 0.5s;
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
     }
+    
+    /*
+    transform CSS 屬性可以讓你修改 CSS 可視化格式模型（visual formatting model）的空間維度。
+    使用此屬性，元素可以被平移、旋轉、縮放和傾斜。
+    */
+    /* transform: translateY(-100%); 垂直上移 */
+    .panel > *:first-child { transform: translateY(-100%); }
+    .panel.open-active > *:first-child { transform: translateY(0); }
+    .panel > *:last-child { transform: translateY(100%); }
+    .panel.open-active > *:last-child { transform: translateY(0); }
 
     .panel p {
       text-transform: uppercase;
@@ -63,12 +102,16 @@
       font-size: 2em;
     }
     .panel p:nth-child(2) {
+      /* 第二個 tag 裡字的大小  */
       font-size: 4em;
     }
 
     .panel.open {
       font-size:40px;
+      flex:5
     }
+
+    
 
   </style>
 
@@ -102,6 +145,23 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
+
+    function toggleOpen(){
+      console.log('Hello');
+      this.classList.toggle('open');
+    }
+
+    function toggleActive(e) {
+      console.log(e.propertyName);
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+    
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    /*事件為 transitionend 在CSS變化後觸發*/
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
 
   </script>
 

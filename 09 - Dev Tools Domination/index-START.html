@@ -18,29 +18,63 @@
     }
 
     // Regular
+    console.log('console.log');
+    // Interpolated console.log('%s', value)
+    console.log('Hello %s', 'World！');
+    // Styled console.log('%c', font-style)
+    console.log(' %c Style', 'font-size:50px;');
+    // warning! console.warn()
+    console.warn('Warn');
+    // Error :| console.error()
+    console.error('Error！');
+    // Info  console.info()
+    console.info('Info');
+    // Testing console.assert()
+    // 可以拿來測試判斷是否為真，若為false則回傳對應的錯誤訊息。
+    const a = 5;
+    const b = 6;
+    console.assert(a > b, 'Assert return false.');
+    console.assert(b > a, 'Assert return ture.');
+    
+    // clearing console.clear()
+    /*
+    console.clear() 
+    補充：Mac上清除的快捷鍵為⌘(Command)+K、Windows快捷鍵則為CTRL+L
+    */
+    // Viewing DOM Elements console.dir()
+    //輸出以 JavaScript 形式表示的指定對象。如果正在記錄的對象是 HTML 元素，
+    //將輸出其以 DOM 形式表示的屬性
+    const test = () => {'test function'};
+    test.run = () => {'test.run()'};
+    console.log(test);
+    console.dir(test);
+    // Grouping together console.groupCollapsed() & console.groupEnd()
+    const products = [
+      { id: 10001, name: 'apple', price: 5},
+      { id: 10002, name: 'banana', price: 10},
+    ];
+    console.log(products);
+    products.forEach(product => {
+      console.groupCollapsed(`${product.id}`);
+      console.log(`name:${product.name}`);
+      console.log(`price:${product.price}`);
+      console.groupEnd(`${product.id}`);
+      })
 
-    // Interpolated
-
-    // Styled
-
-    // warning!
-
-    // Error :|
-
-    // Info
-
-    // Testing
-
-    // clearing
-
-    // Viewing DOM Elements
-
-    // Grouping together
-
-    // counting
-
-    // timing
-
+    // counting console.count()
+      console.count('a');
+      console.count('b');
+      console.count('b');
+      console.count('c');
+      console.count('c');
+      console.count('c');
+    // timing console.time() & console.timeEnd()
+      console.time('紀錄時間');
+      console.timeEnd('紀錄時間');
+    
+    //table
+    console.table(products);
+      
   </script>
 </body>
 </html>

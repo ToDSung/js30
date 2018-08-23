@@ -99,6 +99,34 @@
   </div>
 
 <script>
+
+  const checkboxes = document.querySelectorAll('.item input[type="checkbox"]');
+
+  let lastChecked;
+
+
+  function handlecheck(e){
+    let inBetween = false;
+    console.log(this);
+    //<input type="checkbox">
+    //Javascript裡的this看的是究竟是誰調用該函式
+    if (e.shiftKey && this.checked){
+      checkboxes.forEach(checkbox => {
+        if(checkbox === this || checkbox === lastChecked){
+          console.log(checkbox);
+          //<input type="checkbox">
+          inBetween = !inBetween;
+        }
+        if (inBetween){
+          checkbox.checked = true;
+        }
+      });
+    }
+    lastChecked = this;
+  }
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handlecheck));
+
 </script>
 </body>
 </html>

@@ -6,7 +6,37 @@
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+  <h1>試著輸入password"<br>來看看觸發什麼特效吧！</h1>
+  <h2>已輸入的密碼：<span class="inputCode"></span></h2>
+
 <script>
+
+  const pressed = []
+  const passwd = 'password';
+
+  window.addEventListener('keyup', (e) => {
+    console.log(e);
+    pressed.push(e.key);
+    //splice() 方法可以藉由刪除既有元素並／或加入新元素來改變一個陣列的內容。
+    /*
+    從索引 2 的位置開始，刪除 1 個元素並插入「trumpet」
+    var myFish = ['angel', 'clown', 'drum', 'sturgeon'];
+    var removed = myFish.splice(2, 1, 'trumpet');
+    myFish 為 ["angel", "clown", "trumpet", "sturgeon"]
+    removed 為 ["drum"]
+    */
+    //pressed.splice(-9,0)，
+    pressed.splice(-passwd.length-1, pressed.length -  passwd.length);
+    console.log(-passwd.length-1);
+    console.log(pressed.length -  passwd.length);
+    console.log(pressed);
+    if (pressed.join('').includes(passwd)) {
+      //觸發效果
+      cornify_add();
+    } 
+    document.querySelector('.inputCode').innerHTML = pressed.join('-');
+  })
+
 </script>
 </body>
 </html>

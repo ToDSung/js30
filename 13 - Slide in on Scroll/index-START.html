@@ -57,6 +57,33 @@
         if (callNow) func.apply(context, args);
       };
     }
+    
+    const sliderImages = document.querySelectorAll('.slide-in');
+    console.log(sliderImages);
+    
+    function checkSlide(){
+      sliderImages.forEach(sliderImage => {
+        console.log('active')
+        // 取得圖片1/2高度的定位點（卷軸垂直位移量＋視窗高度）- 1/2圖片高度
+        const slideInAt = (window.scrollY + window.innerHeight) - (sliderImage.height /2);
+        console.log(slideInAt);
+        // 取得圖片底部定位點（利用圖片頂部定位點+圖片高度取得）
+        const imageBottom = sliderImage.offsetTop + sliderImage.height;
+        console.log(imageBottom);
+        // 判斷視窗是否已經超過圖片高度一半
+        const isHalfShown = slideInAt > sliderImage.offsetTop;
+        // 判斷滾動範圍是否已經超過圖片底部（卷軸垂直位移量）
+        const isNotScrolledPast = window.scrollY < imageBottom;
+
+        if (isHalfShown && isNotScrolledPast) {
+          sliderImage.classList.add('active');
+        } else {
+          sliderImage.classList.remove('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', debounce(checkSlide));
 
   </script>
 

@@ -28,7 +28,81 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addItem(e){
+
+    // preventDefault() is used to avoid reload page
+    e.preventDefault();
+    
+    const text = this.querySelector('[name=item]').value;
+    const item = {
+      text,
+      done : false
+    }
+    
+    // 將輸入的資料 push 進 items中
+    items.push(item);
+
+    populateList(items, itemsList);
+    // 將資料存到sessionStorage
+    // sessionStorage.setItem('key', 'value');
+    localStorage.setItem('items', JSON.stringify(items));
+    console.log(localStorage);
+    // reset() is used to clean input bar
+    this.reset()
+  }
+
+  addItems.addEventListener('submit', addItem);
+
+  function populateList(plates = [], platesList){
+    platesList.innerHTML = plates.map((plate, i) => {
+      // return 後面的 ` 不能換行
+      return  `
+        <li>
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''}/>
+          <label for="item${i}">${plate.text}</label>
+          <span data-index=${i}>delete<span> 
+        </li>
+      `;
+    }).join('');
+  }
+
+  function toggleDone(e){
+
+    // 初始化一個存檔狀態
+    let save = false;
+    // e.target 指向最初觸發事件的 DOM 物件
+    const el = e.target;
+    /*
+    <div id="user" data-id="1234567890" data-user="johndoe" data-date-of-birth>John Doe</div>
+
+    let el = document.querySelector('#user');
+
+    el.id == 'user'
+    el.dataset.id === '1234567890'
+    el.dataset.user === 'johndoe'
+    el.dataset.dateOfBirth === ''
+    */
+    const index = el.dataset.index;
+    // 判斷觸發元素，如果是input則為checkbox的狀態切換
+    if(e.target.matches('input')){
+      items[index].done = !items[index].done;
+      save = true;
+    }
+    // 如果是span則是透過splice刪除該物件
+    if(e.target.matches('span')){
+      items.splice(index, 1);
+      save = true;
+    }
+    // 判斷上方有做事才存擋
+    if(save){
+      localStorage.setItem('items', JSON.stringify(items));
+      populateList(items, itemsList);  
+    }
+  }
+
+  itemsList.addEventListener('click', toggleDone)
 
 </script>
 

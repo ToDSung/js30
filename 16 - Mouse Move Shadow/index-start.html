@@ -35,6 +35,48 @@
   </style>
 
 <script>
+
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+  const walk = 100;
+
+  function shadow(e){
+    
+    /*
+     // 透過解構賦值取得並設定資訊
+    const { offsetHeight: height,
+            offsetWidth: width } = hero;
+    let { offsetX: x,
+          offsetY: y  } = e;
+    */
+
+
+    const height = hero.offsetHeight;
+    const width = hero.offsetWidth;
+    
+    let x = e.offsetX;
+    let y = e.offsetY;
+
+    // // 如果在目標區域外，則在加上目標座標值
+    if (this !== e.target){
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+
+    const xWalk = Math.round((x / width * walk) - (walk/2));
+    const yWalk = Math.round((y / height * walk) - (walk/2));
+    console.log(xWalk, yWalk);
+    
+    text.style.textShadow = `
+    ${xWalk}px ${yWalk}px 0px rgba(0, 0, 0, 0.5),
+    ${xWalk * -1}px ${yWalk}px 0px rgba(0, 0, 0, 0.5),
+    ${yWalk}px ${xWalk * -1}px 0px rgba(0, 0, 0, 0.5),
+    ${yWalk * -1}px ${xWalk}px 0px rgba(0, 0, 0, 0.5)
+    `
+  }
+
+  hero.addEventListener('mousemove', shadow);
+
 </script>
 </body>
 </html>

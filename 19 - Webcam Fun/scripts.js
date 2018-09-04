@@ -6,6 +6,7 @@ const snap = document.querySelector('.snap');
 
 function getVideo(){
 
+    // 取得影像
     navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false
@@ -26,6 +27,8 @@ function paintToCanvas(){
     canvas.width = width;
     canvas.height = height;
 
+    //綁定在瀏覽器 window 的一個方法，可以透過 setInterval 指定一段程式碼或函式
+    //定時在多少毫秒(ms)後執行，並回傳此定時器的編號。
     return setInterval(() => {
         ctx.drawImage(video, 0, 0, width, height);
 

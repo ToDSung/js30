@@ -12,6 +12,33 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  //將SpeechRecognition建立起來
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+
+  let p = document.createElement('p');
+
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    const transpcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transpcript)
+      .join('')
+    
+    p.textContent = transpcript;
+
+    // 如果回傳內容已經結束（一段話的結尾）在建立一個新的p元素來放下一段文字
+
+    if(e.result[0].isFinal){
+      p= document.createElement('p');
+      word.appendChild(p);
+    }
+  })
+
+  recognition.addEventListener('end', recognition.start);
+  recognition.start();
 
 </script>
 

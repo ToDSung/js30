@@ -35,6 +35,50 @@
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  msg.text = document.querySelector('[name="text"]').value;
+  console.log(msg);
+
+  function  populateVoices(){
+    voices = this.getVoices();
+    console.log(voices);
+    voicesDropdown.innerHTML = voices
+    .filter(voice => voice.lang.includes('zh') || voice.lang.includes('en'))
+    .map(voice => `<option value=${voice.name}>${voice.name} ${voice.lang}</option>`)
+    .join('');
+  }
+
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+
+  function toggle(starOver = true){
+    speechSynthesis.cancel();
+    console.log(msg);
+    if(starOver){
+      speechSynthesis.speak(msg);
+    }
+  }
+  function setVoice(){
+    msg.voice = voices.find(voice => voice.name === this.value);
+    toggle();
+  }
+
+  function setOption(){
+    //SpeechSynthesisUtterance.pitch：設定或取得發音的音調。
+    //SpeechSynthesisUtterance.rate：設定或取得發音的速度。
+    // pitch 跟 rate input name 命名一樣 所以可這樣寫 
+    console.log(this.name);
+    console.log(this.value);
+    msg[this.name] = this.value;
+    //msg[rate] = 1.7;
+    toggle();
+  }
+
+  voicesDropdown.addEventListener('change', setVoice);
+  options.forEach(option => option.addEventListener('change', setOption));
+  speakButton.addEventListener('click', toggle);
+  stopButton.addEventListener('click', () => toggle(false));
+
+
 </script>
 
 </body>

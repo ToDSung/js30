@@ -35,6 +35,41 @@
   </div>
 
 <script>
+  const slider = document.querySelector('.items');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    // 設定移動的初始值為目前頁面距離-當前item左邊距
+    startX = e.pageX - slider.offsetLeft;
+    // 設定目前捲軸的左距
+    scrollLeft = slider.scrollLeft;
+  })
+
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  })
+
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  })
+
+  slider.addEventListener('mousemove', (e) => {
+    if(!isDown) return;
+    // 避免觸發其他預設事件（按下且移動預設是選取範圍）
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = x - startX;
+    slider.scrollLeft = scrollLeft - walk;
+
+  })
+
+
 </script>
 
   </body>

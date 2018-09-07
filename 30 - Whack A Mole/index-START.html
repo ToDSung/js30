@@ -30,6 +30,15 @@
     <div class="hole hole6">
       <div class="mole"></div>
     </div>
+    <div class="hole hole7">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole8">
+          <div class="mole"></div>
+        </div>
+        <div class="hole hole9">
+            <div class="mole"></div>
+          </div>
   </div>
 
 <script>
@@ -37,6 +46,58 @@
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
 
+  let lastHole;
+  let timeUP = false;
+  let score = 0;
+
+  // 亂數出現時間
+  function randomTime(min, max){
+    return Math.round(Math.random() * (max - min) + min);
+  }
+  // 亂數出現洞
+  function randomHole(holes){
+    const idx = Math.floor(Math.random() * holes.length);
+    const hole = holes[idx];
+
+    if (hole === lastHole){
+      return randomHole(holes);
+    }
+    lastHole = hole;
+    return hole;
+  }
+
+  function peep(){
+    const time = randomTime(300, 1000);
+    const hole = randomHole(holes);
+
+    hole.querySelector('.mole').classList.remove('bonked');
+    hole.classList.add('up');
+    setTimeout( () => {
+      hole.classList.remove('up');
+      if(!timeUP) peep();
+    }, time)
+  }
+
+  function bonk(e){
+    if(!e.isTrusted || this.classList.contains('bonked')) return;
+
+    this.classList.add('bonked');
+    this.classList.remove('up');
+
+    score ++
+    scoreBoard.textContent = score
+  }
+  
+  function startGame(){
+    timeUP = false;
+    scoreBoard.textContent = 0
+    score = 0;
+    peep();
+
+    setTimeout(() => timeUP = true, 10000);
+  }
+
+  moles.forEach(mole => mole.addEventListener('click', bonk));
 </script>
 </body>
 </html>
